@@ -11,6 +11,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -23,17 +24,25 @@ fun MainPage( modifier: Modifier = Modifier) {
         modifier = modifier, // siempre poner esto
         topBar = { MainTopAppBar() }
     ){
-       // Column (modifier = Modifier.padding(it)){  // siempre poner el modifier asi
-        NavHost(
+
+        MainNavHost(
             modifier = Modifier.padding(it),
-            navController = navHostController,
-            startDestination = "lista"
-        ) {//aca se ponen las rutas de navegacion
-            composable("lista"){ ListaPage()}
-            composable("detalle"){ DetallePage()}
-            composable ("crear"){ CrearPage()}
-        }
-       //}
+            navHostController = navHostController
+        )
+
+    }
+}
+
+@Composable
+fun MainNavHost(modifier: Modifier = Modifier, navHostController: NavHostController){
+    NavHost(
+        modifier = modifier,
+        navController = navHostController,
+        startDestination = "lista"
+    ) {                 //aca se ponen las rutas de navegacion
+        composable("lista"){ ListaPage()}
+        composable("detalle"){ DetallePage()}
+        composable ("crear"){ CrearPage()}
     }
 }
 @OptIn(ExperimentalMaterial3Api::class)

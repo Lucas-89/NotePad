@@ -9,6 +9,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
@@ -20,29 +22,45 @@ import com.example.notepad.ui.theme.NotepadTheme
 @Composable
 fun MainPage( modifier: Modifier = Modifier) {
     val navHostController = rememberNavController()
+
+    //creo una lista para almacenar las notas
+    val notas = remember {mutableStateListOf<String>() }
+
     Scaffold (
         modifier = modifier, // siempre poner esto
         topBar = { MainTopAppBar() }
     ){
-
         MainNavHost(
             modifier = Modifier.padding(it),
-            navHostController = navHostController
+            navHostController = navHostController,
+            notas = notas
         )
-
     }
 }
 
 @Composable
-fun MainNavHost(modifier: Modifier = Modifier, navHostController: NavHostController){
+fun MainNavHost(
+    modifier: Modifier = Modifier,
+    navHostController: NavHostController,
+    notas : List<String>
+) {
     NavHost(
         modifier = modifier,
         navController = navHostController,
         startDestination = "lista"
     ) {                 //aca se ponen las rutas de navegacion
-        composable("lista"){ ListaPage()}
-        composable("detalle"){ DetallePage()}
-        composable ("crear"){ CrearPage()}
+        composable("lista"){
+            ListaPage(
+                notas = notas,
+                onNotaSelected = {navHostController.navigate("detalle")}
+            )
+        }
+        composable("detalle"){
+            DetallePage()
+        }
+        composable ("crear"){
+            CrearPage()
+        }
     }
 }
 @OptIn(ExperimentalMaterial3Api::class)

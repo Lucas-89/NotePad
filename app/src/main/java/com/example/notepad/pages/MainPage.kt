@@ -2,7 +2,11 @@ package com.example.notepad.pages
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -28,7 +32,11 @@ fun MainPage( modifier: Modifier = Modifier) {
 
     Scaffold (
         modifier = modifier, // siempre poner esto
-        topBar = { MainTopAppBar() }
+        topBar = { MainTopAppBar() },
+        floatingActionButton = {
+            BotonCrear(navHostController )
+        }
+        
     ){
         MainNavHost(
             modifier = Modifier.padding(it),
@@ -58,12 +66,23 @@ fun MainNavHost(
         composable("detalle"){
             DetallePage()
         }
-        composable ("crear"){
+        composable ("crearNota"){
             CrearNotaPage()
         }
     }
 }
-@OptIn(ExperimentalMaterial3Api::class)
+
+@Composable
+fun BotonCrear(navHostController: NavHostController){
+    FloatingActionButton(onClick = {
+        navHostController.navigate("crearNota") // este "crearNota" viene de la linea 75. Tiene que ser el mismo nombre
+    }) {
+        Icon(
+            imageVector = Icons.Filled.AddCircle,
+            contentDescription ="nueva nota"
+        )
+}
+        @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainTopAppBar(){
     TopAppBar(
